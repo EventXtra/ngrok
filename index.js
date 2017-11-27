@@ -6,6 +6,7 @@ var lock = require('lock')();
 var async = require('async');
 var uuid = require('uuid');
 var url = require('url');
+var path = require('path');
 
 var bin = './ngrok' + (platform === 'win32' ? '.exe' : '');
 var ready = /starting web service.*addr=(\d+\.\d+\.\d+\.\d+:\d+)/;
@@ -105,10 +106,17 @@ function runNgrok(opts, cb) {
 		start.push('--config=' + opts.configPath);
 	}
 
+	var ngrokBin = bin;
+	var cwd = __dirname + '/bin';
+	if (opts.ngrokBin) {
+		ngrokBin = path.basename(opts.ngrokBin);
+		cwd = path.dirname(opts.ngrokBin);
+	}
+
 	ngrok = spawn(
-			bin,
+			ngrokBin,
 			start,
-			{cwd: __dirname + '/bin'});
+			{cwd: cwd});
 
 
 	ngrok.stdout.on('data', function (data) {
