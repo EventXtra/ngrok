@@ -270,9 +270,14 @@ function kill(cb) {
 	return ngrok.kill();
 }
 
+function ngrokProcess() {
+	return ngrok;
+}
+
 emitter.connect = connect;
 emitter.disconnect = disconnect;
 emitter.authtoken = authtoken;
 emitter.kill = kill;
+emitter.ngrokProcess = ngrokProcess;
 
 module.exports = emitter;
